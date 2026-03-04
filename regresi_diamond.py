@@ -15,16 +15,14 @@ data = [
     (0.32, 919), (0.33, 945), (0.35, 1086)
 ]
 
-# Konversi data ke numpy array
 data_array = np.array(data)
 x = data_array[:, 0]  # Caratage
 y = data_array[:, 1]  # Price
 
-# Inisialisasi parameter
 theta0 = 0
 theta1 = 0
 alpha = 0.1
-m = len(x)
+m = len(x) #panjangnya
 J_values = []
 iterations = 0
 convergence_threshold = 0.01
@@ -41,7 +39,7 @@ print("="*70)
 
 previous_J = float('inf')
 
-# Gradient Descent
+
 while True:
     # Prediksi: h(x) = θ₀ + θ₁ * x
     h_theta = theta0 + theta1 * x
@@ -53,20 +51,20 @@ while True:
     J = (1 / (2 * m)) * np.sum(error ** 2)
     J_values.append(J)
     
-    # Delta J (selisih dengan iterasi sebelumnya)
+    # Dapat nilai delta J (selisih dengan iterasi sebelumnya)
     delta_J = abs(previous_J - J)
     
     # Print perkembangan setiap iterasi
-    print(f"{iterations:<6} {theta0:<12.6f} {theta1:<12.6f} {J:<15.6f} {delta_J:<15.6f}")
+    print(f"iterasi: {iterations:<6} | theta0: {theta0:<12.6f} | theta1: {theta1:<12.6f} | Cost J: {J:<15.6f} |  ΔJ: {delta_J:<15.6f}")
     
-    # Cek konvergensi
+    # cek convergent pada delta J 
     if delta_J < convergence_threshold:
         print("="*70)
         print(f"KONVERGEN! (Δ J = {delta_J:.6f} < {convergence_threshold})")
         print("="*70)
         break
     
-    # Update parameter menggunakan Gradient Descent
+    # Update theta0 dan theta1
     temp_theta0 = theta0 - alpha * (1 / m) * np.sum(error)
     temp_theta1 = theta1 - alpha * (1 / m) * np.sum(error * x)
     
@@ -76,7 +74,7 @@ while True:
     previous_J = J
     iterations += 1
     
-    # Safety check untuk infinite loop
+    # Cek biar gak infinite loop
     if iterations > 100000:
         print("Mencapai batas iterasi maksimal!")
         break
@@ -88,19 +86,19 @@ print(f"Total iterasi: {iterations}")
 print(f"Theta 0 (θ₀): {theta0:.6f}")
 print(f"Theta 1 (θ₁): {theta1:.6f}")
 print(f"Cost Function (J): {J:.6f}")
-print(f"Persamaan Linear: Price = {theta0:.2f} + {theta1:.2f} * Caratage")
+print(f"Persamaan Linear: Price = {theta0:.2f} + {theta1:.2f} * Caratage (X)")
 print("="*70)
 
-# Visualisasi - 1 Grafik 
+# Visualisasi - Grafik 
 plt.figure(figsize=(12, 7))
 
 # Plot data asli (cluster)
 plt.scatter(x, y, color='blue', s=80, alpha=0.6, label='Data Actual', edgecolors='black', linewidth=0.5)
 
-# Plot garis linear regression
+# Plot garis 
 x_line = np.linspace(x.min(), x.max(), 100)
 y_line = theta0 + theta1 * x_line
-plt.plot(x_line, y_line, color='red', linewidth=2.5, label=f'Linear Regression\ny = {theta0:.2f} + {theta1:.2f}x')
+plt.plot(x_line, y_line, color='red', linewidth=2.5, label=f'Linear Regression')
 
 plt.xlabel('Caratage (x)', fontsize=12, fontweight='bold')
 plt.ylabel('Price (y)', fontsize=12, fontweight='bold')
